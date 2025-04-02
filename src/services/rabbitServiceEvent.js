@@ -3,19 +3,13 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const RABBITMQ_URL = process.env.RABBIT_HOST;
+const RABBITMQ_URL = process.env.RABBITMQ_URL;
 const RABBITMQ_EXCHANGE = "user_event";
 const RABBITMQ_ROUTING_KEY = "user.created";
 const EMAIL_QUEUE = "user_create_queue";
 
 export async function userCreatedEvent(user) {
-  const connection = await amqp.connect({
-    protocol: 'amqp',
-    hostname: process.env.RABBITMQ_HOST, // Debe ser "rabbitmq" en Docker
-    port: 5672,
-    username: process.env.RABBITMQ_USER,
-    password: process.env.RABBITMQ_PASS
-  });
+  const connection = await amqp.connect(RABBITMQ_URL); // Usar solo RABBITMQ_URL
   const channel = await connection.createChannel();
 
   try {

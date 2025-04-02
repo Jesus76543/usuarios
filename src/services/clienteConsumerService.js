@@ -5,19 +5,14 @@ import { userCreatedEvent } from "./rabbitServiceEvent.js";
 
 dotenv.config();
 
+const RABBITMQ_URL = process.env.RABBITMQ_URL;
 const RABBITMQ_EXCHANGE = "cliente_event";
 const RABBITMQ_QUEUE = "cliente_to_user_queue";
 const RABBITMQ_ROUTING_KEY = "cliente.created";
 
 export async function startClienteConsumer() {
   try {
-    const connection = await amqp.connect({
-      protocol: 'amqp',
-      hostname: process.env.RABBITMQ_HOST,
-      port: 5672,
-      username: process.env.RABBITMQ_USER,
-      password: process.env.RABBITMQ_PASS
-    });
+    const connection = await amqp.connect(RABBITMQ_URL); // Usar solo RABBITMQ_URL
     const channel = await connection.createChannel();
 
     // Declarar exchange
@@ -89,7 +84,7 @@ export async function startClienteConsumer() {
     return { connection, channel };
   } catch (error) {
     console.error("Error conectando a RabbitMQ:", error);
-    console.log("Reintentando en 5 segundos...");
+    console.log("Reintentando en 5 segundos...", error);
     setTimeout(startClienteConsumer, 5000);
   }
 }
