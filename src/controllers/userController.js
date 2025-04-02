@@ -1,4 +1,3 @@
-
 import User from "../models/userModel.js";
 import { userCreatedEvent } from "../services/rabbitServiceEvent.js";
 import { Op } from "sequelize";

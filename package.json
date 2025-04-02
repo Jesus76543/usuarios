@@ -6,7 +6,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "vallejo": "nodemon app.js"
+    "dev": "nodemon app.js"
   },
   "dependencies": {
     "amqp": "^0.2.7",
